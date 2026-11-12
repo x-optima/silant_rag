@@ -1,0 +1,31 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.DS_Store
+
+# Переменные окружения: могут содержать токен админ-панели и ключ LLM
+.env
+.env.bak
+
+# Резервные копии, которые создаёт destroy.sh --purge
+backups/
+
+# Заметки
+LONGRID.md
+
+# Резервные копии настроек, которые создаёт админ-панель
+config/*.bak
+config/*.tmp
+
+# Локальные индексы и загруженные руководства (исходники PDF не распространяем)
+data/*.sqlite3
+data/*.sqlite3-journal
+data/*.sqlite3-wal
+data/documents/*
+!data/documents/README.md
+!data/documents/.gitkeep
+
+# Служебные артефакты прогонов
+eval/last_run.json
+*.log

@@ -1,0 +1,46 @@
+services:
+  silant-assistant:
+    build:
+      context: .
+    image: silant-assistant:latest
+    container_name: silant-assistant
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      PORT: "8000"
+      SILANT_CONFIG: "${SILANT_CONFIG:-/app/config/service.json}"
+      SILANT_DB: "${SILANT_DB:-/app/data/index.sqlite3}"
+      SILANT_DOCS_DIR: "${SILANT_DOCS_DIR:-/app/data/documents}"
+      SILANT_AUTOINGEST: "${SILANT_AUTOINGEST:-1}"
+      # Дополнительные флаги сервера
+      SILANT_SERVER_ARGS: "${SILANT_SERVER_ARGS:-}"
+      # Ключ LLM берётся из окружения хоста и никогда не попадает в файл настроек
+      SILANT_LLM_API_KEY: "${SILANT_LLM_API_KEY:-}"
+      SILANT_LLM_BASE_URL: "${SILANT_LLM_BASE_URL:-}"
+      SILANT_LLM_MODEL: "${SILANT_LLM_MODEL:-}"
+      # Токен нужен только если настройки правят не с 127.0.0.1
+      SILANT_ADMIN_TOKEN: "${SILANT_ADMIN_TOKEN:-}"
+    volumes:
+      # Индекс и загруженные руководства живут на хосте: контейнер можно
+      # пересобрать, база и документы останутся на месте.
+      - ./data:/app/data
+      - ./config:/app/config
+    restart: unless-stopped
+    # Ограничения контейнера: привилегии не нужны, корневая файловая система
+    # только для чтения, запись разрешена лишь в томах и /tmp.
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+    # Если каталоги ./data и ./config принадлежат другому uid, раскомментируйте
+    # строку ниже и укажите владельца: user: "1000:1000"
+    # user: "1000:1000"

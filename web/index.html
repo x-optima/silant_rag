@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>СИЛАНТ · Сервисный ассистент</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">С</div>
+      <div class="brand-text">
+        <h1 id="app-name">СИЛАНТ · Сервисный ассистент</h1>
+        <p id="app-subtitle">Ответы только по руководствам по эксплуатации ЧЗСА</p>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <label for="model-select">Модель техники</label>
+      <select id="model-select">
+        <option value="">— уточнить в вопросе —</option>
+      </select>
+      <a class="topbar-link" href="/admin.html">Настройки</a>
+    </div>
+  </header>
+
+  <div id="empty-banner" class="banner banner-warn hidden" role="status">
+    База документов пуста. Загрузите PDF руководств в <code>data/documents</code> и выполните
+    <code>./deploy.sh --reindex</code> — сервис разберёт документы сам.
+  </div>
+
+  <main class="layout">
+    <section class="chat" aria-label="Чат">
+      <div id="messages" class="messages" aria-live="polite">
+        <article class="message message-bot">
+          <div class="message-head">
+            <span class="avatar">С</span>
+            <span class="author">Ассистент</span>
+          </div>
+          <div class="message-body">
+            <p>Здравствуйте. Спросите про регламент ТО, заправочные объёмы, порядок работ,
+            проверки перед сменой или причины срабатывания контрольной лампы.</p>
+            <p class="muted">Ответ строится только по загруженным руководствам и всегда содержит
+            ссылку на документ и раздел. Если ответа в руководстве нет, сервис сообщит об этом
+            и покажет, что нашлось рядом по теме.</p>
+          </div>
+        </article>
+      </div>
+
+      <form id="chat-form" class="composer">
+        <label class="sr-only" for="question">Вопрос</label>
+        <textarea id="question" rows="2" placeholder="Например: через сколько моточасов проводится ТО-2 на ПД5,0?" required></textarea>
+        <button type="submit" id="send">Спросить</button>
+      </form>
+      <p class="disclaimer">
+        Сервис не пользуется внешними источниками: любое утверждение подтверждается разделом руководства завода.
+      </p>
+    </section>
+
+    <aside class="sidebar" aria-label="Сведения о базе">
+      <section class="panel">
+        <h2>База документов</h2>
+        <div id="documents" class="documents"><p class="muted">Загрузка…</p></div>
+        <p id="stats" class="stats muted"></p>
+      </section>
+
+      <section class="panel">
+        <h2>Типовые вопросы</h2>
+        <div id="examples" class="examples"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Как формируется ответ</h2>
+        <ol class="how">
+          <li>Поиск по разделам и таблицам руководств, с учётом модели.</li>
+          <li>Дословная цитата фрагмента, где есть ответ.</li>
+          <li>Ссылка: документ, раздел, страница.</li>
+          <li>Предупреждения ВНИМАНИЕ / ВАЖНО из того же раздела.</li>
+        </ol>
+        <p class="muted small">Если данных нет — честный отказ и контакт сервисной службы.</p>
+      </section>
+    </aside>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

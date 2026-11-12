@@ -1,0 +1,29 @@
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# Секреты и локальные копии настроек не должны попадать в контекст сборки
+.env
+.env.*
+!.env.example
+backups/
+config/*.bak
+config/*.tmp
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Данные и индекс монтируются томом, в образ не включаются
+data/
+eval/last_run.json
+screenshots/
+*.log
+
+Dockerfile
+docker-compose.yml
+.dockerignore

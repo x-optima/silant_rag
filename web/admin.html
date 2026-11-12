@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>СИЛАНТ · Настройки сервиса</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">С</div>
+      <div class="brand-text">
+        <h1>Настройки сервиса</h1>
+        <p>Контакты сервисной службы, пороги отказа, режим LLM</p>
+      </div>
+    </div>
+    <div class="topbar-controls">
+      <a class="topbar-link" href="/">← К ассистенту</a>
+    </div>
+  </header>
+
+  <div id="access-banner" class="banner banner-warn hidden" role="alert">
+    <p>
+      Настройки доступны только с самого сервера. Для удалённого доступа задайте
+      переменную <code>SILANT_ADMIN_TOKEN</code> и вставьте её значение ниже.
+    </p>
+    <div class="token-row">
+      <label for="admin-token">Токен доступа</label>
+      <input id="admin-token" type="password" autocomplete="off" placeholder="значение SILANT_ADMIN_TOKEN">
+      <button type="button" id="apply-token" class="button-secondary">Применить</button>
+    </div>
+    <p class="muted">Токен хранится только в этом браузере и не передаётся третьим сторонам.</p>
+  </div>
+
+  <main class="admin">
+    <div id="status" class="admin-status hidden" role="status"></div>
+
+    <section class="panel">
+      <h2>Сервис</h2>
+      <div class="field">
+        <label for="app-name">Название в шапке</label>
+        <input id="app-name" type="text" maxlength="200" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="app-subtitle">Подзаголовок</label>
+        <input id="app-subtitle" type="text" maxlength="200" autocomplete="off">
+      </div>
+      <p class="hint">Эти строки видит механик в шапке чата.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Контакты сервисной службы</h2>
+      <p class="hint">
+        Подставляются в ответ, когда в руководствах нет нужного раздела: механик должен
+        понимать, куда звонить. Пока поля пусты, вместо контактов выводится заглушка.
+      </p>
+      <div class="grid-2">
+        <div class="field">
+          <label for="contact-phone">Телефон</label>
+          <input id="contact-phone" type="tel" maxlength="25" placeholder="+7 (3519) 00-00-00" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="contact-email">E-mail</label>
+          <input id="contact-email" type="email" maxlength="300" placeholder="service@example.ru" autocomplete="off">
+        </div>
+      </div>
+      <div class="field">
+        <label for="contact-site">Сайт</label>
+        <input id="contact-site" type="url" maxlength="300" placeholder="https://…" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="contact-note">Пояснение для ответа</label>
+        <textarea id="contact-note" rows="3" maxlength="300"></textarea>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Пороги отказа</h2>
+      <p class="hint">
+        Чем выше порог, тем чаще сервис честно отказывается вместо ответа «рядом по теме».
+        Значения подобраны на демонстрационном корпусе; после загрузки заводских руководств
+        их стоит проверить на тестовом наборе.
+      </p>
+      <div class="grid-3">
+        <div class="field">
+          <label for="th-coverage">min_coverage</label>
+          <input id="th-coverage" type="number" min="0" max="1" step="0.01">
+        </div>
+        <div class="field">
+          <label for="th-score">min_score</label>
+          <input id="th-score" type="number" min="0" max="1" step="0.01">
+        </div>
+        <div class="field">
+          <label for="th-terms">min_matched_terms</label>
+          <input id="th-terms" type="number" min="1" max="10" step="1">
+        </div>
+        <div class="field">
+          <label for="th-topk">top_k</label>
+          <input id="th-topk" type="number" min="1" max="50" step="1">
+        </div>
+        <div class="field">
+          <label for="th-candidates">candidate_limit</label>
+          <input id="th-candidates" type="number" min="10" max="500" step="10">
+        </div>
+        <div class="field">
+          <label for="parenthetical">Модель с рядом в скобках</label>
+          <select id="parenthetical"></select>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>LLM-режим</h2>
+      <p class="hint">
+        По умолчанию выключен: сервис отвечает дословными цитатами. Ключ доступа в файл
+        настроек не пишется — он задаётся переменной окружения <code>SILANT_LLM_API_KEY</code>.
+        <span id="llm-key-state" class="muted"></span>
+      </p>
+      <label class="checkbox">
+        <input id="llm-enabled" type="checkbox">
+        <span>Формулировать ответ моделью поверх найденных фрагментов</span>
+      </label>
+      <div class="grid-2">
+        <div class="field">
+          <label for="llm-base">Базовый адрес API</label>
+          <input id="llm-base" type="url" maxlength="300" placeholder="https://api.openai.com/v1">
+        </div>
+        <div class="field">
+          <label for="llm-model">Модель</label>
+          <input id="llm-model" type="text" maxlength="120" placeholder="gpt-4o-mini">
+        </div>
+        <div class="field">
+          <label for="llm-temperature">temperature</label>
+          <input id="llm-temperature" type="number" min="0" max="2" step="0.1">
+        </div>
+        <div class="field">
+          <label for="llm-timeout">timeout_seconds</label>
+          <input id="llm-timeout" type="number" min="5" max="300" step="5">
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Полный JSON</h2>
+      <p class="hint">
+        Продвинутый режим: правила уточнения модели и границы применимости базы. Правки
+        проверяются перед записью: некорректный конфиг сохранить нельзя.
+      </p>
+      <textarea id="json-editor" class="json-editor" rows="18" spellcheck="false"></textarea>
+      <div class="admin-actions">
+        <button type="button" id="load-json" class="button-secondary">Перечитать из файла</button>
+        <button type="button" id="download-json" class="button-secondary">Скачать JSON</button>
+      </div>
+    </section>
+
+    <div class="admin-footer">
+      <p class="hint" id="config-path"></p>
+      <div class="admin-actions">
+        <button type="button" id="reset" class="button-secondary">Отменить изменения</button>
+        <button type="button" id="save" class="button-primary">Сохранить настройки</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="/admin.js"></script>
+</body>
+</html>
