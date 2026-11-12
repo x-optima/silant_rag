@@ -328,22 +328,19 @@ sudo apt install poppler-utils
 
 ## Скриншоты
 
-Место для снимков экрана. Файлы складываются в `screenshots/`:
 
-| Файл | Что показать |
-|---|---|
-| `screenshots/01-chat.png` | ответ на вопрос о ТО-2 с цитатой и источником |
-| `screenshots/02-no-answer.png` | ответ «в руководстве этого нет» с контактом службы |
-| `screenshots/03-clarify.png` | уточнение модели |
-| `screenshots/04-warnings.png` | блок предупреждений |
-| `screenshots/05-documents.png` | список документов и статистика базы |
-| `screenshots/06-admin.png` | панель настроек: контакты службы и пороги |
-| `screenshots/07-docker.png` | `docker compose ps` со статусом `healthy` |
+![Ответ с цитатой и источником](screenshots/scr1_1.png)  
 
-![Ответ с цитатой и источником](screenshots/01-chat.png)
-![Ответ «в руководстве этого нет»](screenshots/02-no-answer.png)
-![Уточнение модели](screenshots/03-clarify.png)
-![Предупреждения](screenshots/04-warnings.png)
-![База документов](screenshots/05-documents.png)
-![Панель настроек](screenshots/06-admin.png)
-![Состояние контейнера](screenshots/07-docker.png)
+![Ответ «в руководстве этого нет»](screenshots/scr1_2.png)  
+
+![Уточнение модели](screenshots/scr1_3.png)  
+
+![Предупреждения](screenshots/scr1_4.png)  
+
+![База документов](screenshots/scr1_5.png)  
+  
+![Панель настроек](screenshots/scr1_6.png)  
+
+![Состояние контейнера](screenshots/scr1_7.png)  
+
+  
